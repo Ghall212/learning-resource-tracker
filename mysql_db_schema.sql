@@ -1,7 +1,7 @@
--- DROP DATABASE LearningResourcesTracker;
-CREATE DATABASE IF NOT EXISTS LearningResourcesTracker;
+-- DROP DATABASE LearningResourceTracker;
+CREATE DATABASE IF NOT EXISTS LearningResourceTracker;
 
-USE LearningResourcesTracker;
+USE LearningResourceTracker;
 
 CREATE TABLE IF NOT EXISTS State(
 	state_id INT AUTO_INCREMENT PRIMARY KEY,

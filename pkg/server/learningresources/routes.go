@@ -13,12 +13,12 @@ type service interface {
 
 // Router ...
 type Router struct {
-	CategoryService service
+	Service service
 }
 
 // GetAll ...
 func (cr *Router) GetAll(w http.ResponseWriter, r *http.Request) {
-	categories := cr.CategoryService.GetLearningResources()
+	categories := cr.Service.GetLearningResources()
 
 	if err := json.NewEncoder(w).Encode(categories); err != nil {
 		panic(err)

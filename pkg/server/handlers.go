@@ -25,7 +25,7 @@ func mapLearningResourcesRoutes(r *mux.Router, db *sql.DB) {
 		TopicRepository:    topicRepository,
 		ResourceRepository: resourceRepository,
 	}
-	learningResourcesRouter := &learningresources.Router{CategoryService: learningResourcesService}
+	learningResourcesRouter := &learningresources.Router{Service: learningResourcesService}
 
 	r.HandleFunc("/learningresources", learningResourcesRouter.GetAll)
 }

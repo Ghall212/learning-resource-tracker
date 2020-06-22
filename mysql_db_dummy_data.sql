@@ -1,4 +1,4 @@
-USE LearningResourcesTracker;
+USE LearningResourceTracker;
 
 INSERT INTO State (label)
 VALUES
