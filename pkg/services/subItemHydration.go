@@ -14,7 +14,7 @@ func (cr *LearningResourcesService) hydrateSubItems(category *models.Category, d
 		return
 	}
 	var wg sync.WaitGroup
-	wg.Add(3)
+	wg.Add(2)
 	if nextDepth <= maxCategoryDepth {
 		go func() {
 			cr.hydrateSubCategories(category, nextDepth)
@@ -25,10 +25,6 @@ func (cr *LearningResourcesService) hydrateSubItems(category *models.Category, d
 	}
 	go func() {
 		cr.hydrateSubTopics(category)
-		wg.Done()
-	}()
-	go func() {
-		cr.hydrateCategoryTags(category)
 		wg.Done()
 	}()
 	wg.Wait()
@@ -46,11 +42,15 @@ func (cr *LearningResourcesService) hydrateSubTopics(category *models.Category) 
 
 func (cr *LearningResourcesService) hydrateCategories(categories models.Categories, depth int) {
 	var wg sync.WaitGroup
-	wg.Add(len(categories))
+	wg.Add(len(categories) * 2)
 	for i := range categories {
 		index := i
 		go func() {
 			cr.hydrateSubItems(&categories[index], depth)
+			wg.Done()
+		}()
+		go func() {
+			cr.hydrateCategoryTags(&categories[index])
 			wg.Done()
 		}()
 	}
