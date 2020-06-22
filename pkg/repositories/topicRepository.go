@@ -19,7 +19,6 @@ func (tr *TopicRepository) GetTopTopics() models.Topics {
 								t.title,
 								t.summary,
 								s.label,
-								p.priority_id,
 								p.label,
 								p.worth
 							FROM
@@ -41,7 +40,6 @@ func (tr *TopicRepository) GetTopTopics() models.Topics {
 			&topic.Title,
 			&topic.Summary,
 			&topic.State,
-			&topic.Priority.PriorityID,
 			&topic.Priority.Label,
 			&topic.Priority.Worth,
 		)
@@ -62,7 +60,6 @@ func (tr *TopicRepository) GetCategoryTopics(categoryID int) models.Topics {
 								t.title,
 								t.summary,
 								s.label,
-								p.priority_id,
 								p.label,
 								p.worth
 							FROM
@@ -84,7 +81,6 @@ func (tr *TopicRepository) GetCategoryTopics(categoryID int) models.Topics {
 			&topic.Title,
 			&topic.Summary,
 			&topic.State,
-			&topic.Priority.PriorityID,
 			&topic.Priority.Label,
 			&topic.Priority.Worth,
 		)

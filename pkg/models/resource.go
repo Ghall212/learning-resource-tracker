@@ -7,6 +7,7 @@ type Resource struct {
 	URL        string  `json:"url"`
 	Summary    *string `json:"summary"`
 	State      string  `json:"state"`
+	Tags       Tags    `json:"tags"`
 }
 
 // Resources ...

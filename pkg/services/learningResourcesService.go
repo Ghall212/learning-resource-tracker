@@ -20,11 +20,18 @@ type resourceRepository interface {
 	GetTopicResources(topicID int) models.Resources
 }
 
+type tagRepository interface {
+	GetCategoryTags(categoryID int) models.Tags
+	GetTopicTags(topicID int) models.Tags
+	GetResourceTags(resourceID int) models.Tags
+}
+
 // LearningResourcesService ...
 type LearningResourcesService struct {
 	CategoryRepository categoryRepository
 	TopicRepository    topicRepository
 	ResourceRepository resourceRepository
+	TagRepository      tagRepository
 }
 
 // GetLearningResources ...
@@ -51,33 +58,14 @@ func (cr *LearningResourcesService) GetLearningResources() LearningResources {
 
 func (cr *LearningResourcesService) getTopCategories() models.Categories {
 	topCategories := cr.CategoryRepository.GetTopCategories()
-	var wg sync.WaitGroup
-	wg.Add(len(topCategories))
-	depth := 1
-	for i := range topCategories {
-		index := i
-		go func() {
-			cr.hydrateSubItems(&topCategories[index], depth)
-			wg.Done()
-		}()
-	}
-	wg.Wait()
+	cr.hydrateCategories(topCategories, 1)
 
 	return topCategories
 }
 
 func (cr *LearningResourcesService) getTopTopics() models.Topics {
 	topTopics := cr.TopicRepository.GetTopTopics()
-	var wg sync.WaitGroup
-	wg.Add(len(topTopics))
-	for i := range topTopics {
-		index := i
-		go func() {
-			cr.hydrateSubResources(&topTopics[index])
-			wg.Done()
-		}()
-	}
-	wg.Wait()
+	cr.hydrateTopics(topTopics)
 
 	return topTopics
 }

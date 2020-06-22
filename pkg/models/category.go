@@ -6,6 +6,7 @@ type Category struct {
 	Label         string     `json:"label"`
 	ParentID      *int       `json:"parentID"`
 	Depth         int        `json:"depth"`
+	Tags          Tags       `json:"tags"`
 	SubCategories Categories `json:"subCategories"`
 	Topics        Topics     `json:"topics"`
 }

@@ -7,6 +7,7 @@ type Topic struct {
 	Summary   *string   `json:"summary"`
 	State     string    `json:"state"`
 	Priority  Priority  `json:"priority"`
+	Tags      Tags      `json:"tags"`
 	Resources Resources `json:"resources"`
 }
 

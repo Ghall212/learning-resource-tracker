@@ -20,10 +20,12 @@ func mapLearningResourcesRoutes(r *mux.Router, db *sql.DB) {
 	categoryRepository := &repositories.CategoryRepository{DB: db}
 	topicRepository := &repositories.TopicRepository{DB: db}
 	resourceRepository := &repositories.ResourceRepository{DB: db}
+	tagRepository := &repositories.TagRepository{DB: db}
 	learningResourcesService := &services.LearningResourcesService{
 		CategoryRepository: categoryRepository,
 		TopicRepository:    topicRepository,
 		ResourceRepository: resourceRepository,
+		TagRepository:      tagRepository,
 	}
 	learningResourcesRouter := &learningresources.Router{Service: learningResourcesService}
 
