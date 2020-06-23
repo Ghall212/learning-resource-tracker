@@ -8,7 +8,7 @@ import (
 )
 
 type service interface {
-	GetLearningResources() services.LearningResources
+	GetLearningResources() (*services.LearningResources, error)
 }
 
 // Router ...
@@ -18,9 +18,12 @@ type Router struct {
 
 // GetAll ...
 func (cr *Router) GetAll(w http.ResponseWriter, r *http.Request) {
-	categories := cr.Service.GetLearningResources()
+	categories, err := cr.Service.GetLearningResources()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 
 	if err := json.NewEncoder(w).Encode(categories); err != nil {
-		panic(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }

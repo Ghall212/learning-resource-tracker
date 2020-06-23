@@ -12,7 +12,7 @@ type CategoryRepository struct {
 }
 
 // GetTopCategories ...
-func (cr *CategoryRepository) GetTopCategories() models.Categories {
+func (cr *CategoryRepository) GetTopCategories() (models.Categories, error) {
 	rows, err := cr.DB.Query(`
 							SELECT
 								c.category_id,
@@ -24,7 +24,7 @@ func (cr *CategoryRepository) GetTopCategories() models.Categories {
 							;
 							`)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	categories := make(models.Categories, 0)
@@ -35,17 +35,17 @@ func (cr *CategoryRepository) GetTopCategories() models.Categories {
 			&category.Label,
 		)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		category.Depth = 1
 		categories = append(categories, category)
 	}
 
-	return categories
+	return categories, nil
 }
 
 // GetSubCategories ...
-func (cr *CategoryRepository) GetSubCategories(parentID int, depth int) models.Categories {
+func (cr *CategoryRepository) GetSubCategories(parentID int, depth int) (models.Categories, error) {
 	rows, err := cr.DB.Query(`
 							SELECT
 								c.category_id,
@@ -58,7 +58,7 @@ func (cr *CategoryRepository) GetSubCategories(parentID int, depth int) models.C
 							;
 							`, parentID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	subCategories := make(models.Categories, 0)
@@ -70,11 +70,11 @@ func (cr *CategoryRepository) GetSubCategories(parentID int, depth int) models.C
 			&category.ParentID,
 		)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		category.Depth = depth
 		subCategories = append(subCategories, category)
 	}
 
-	return subCategories
+	return subCategories, nil
 }

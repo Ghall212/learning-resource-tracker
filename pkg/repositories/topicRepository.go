@@ -12,7 +12,7 @@ type TopicRepository struct {
 }
 
 // GetTopTopics ...
-func (tr *TopicRepository) GetTopTopics() models.Topics {
+func (tr *TopicRepository) GetTopTopics() (models.Topics, error) {
 	rows, err := tr.DB.Query(`
 							SELECT
 								t.topic_id,
@@ -29,7 +29,7 @@ func (tr *TopicRepository) GetTopTopics() models.Topics {
 							;
 							`)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	topics := make(models.Topics, 0)
@@ -44,16 +44,16 @@ func (tr *TopicRepository) GetTopTopics() models.Topics {
 			&topic.Priority.Worth,
 		)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		topics = append(topics, topic)
 	}
 
-	return topics
+	return topics, nil
 }
 
 // GetCategoryTopics ...
-func (tr *TopicRepository) GetCategoryTopics(categoryID int) models.Topics {
+func (tr *TopicRepository) GetCategoryTopics(categoryID int) (models.Topics, error) {
 	rows, err := tr.DB.Query(`
 							SELECT
 								t.topic_id,
@@ -70,7 +70,7 @@ func (tr *TopicRepository) GetCategoryTopics(categoryID int) models.Topics {
 							;
 							`, categoryID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	topics := make(models.Topics, 0)
@@ -85,10 +85,10 @@ func (tr *TopicRepository) GetCategoryTopics(categoryID int) models.Topics {
 			&topic.Priority.Worth,
 		)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		topics = append(topics, topic)
 	}
 
-	return topics
+	return topics, nil
 }

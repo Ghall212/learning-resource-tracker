@@ -12,7 +12,7 @@ type ResourceRepository struct {
 }
 
 // GetTopicResources ...
-func (rr *ResourceRepository) GetTopicResources(topicID int) models.Resources {
+func (rr *ResourceRepository) GetTopicResources(topicID int) (models.Resources, error) {
 	rows, err := rr.DB.Query(`
 							SELECT
 								r.resource_item_id,
@@ -27,7 +27,7 @@ func (rr *ResourceRepository) GetTopicResources(topicID int) models.Resources {
 							;
 							`, topicID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	resources := make(models.Resources, 0)
@@ -41,10 +41,10 @@ func (rr *ResourceRepository) GetTopicResources(topicID int) models.Resources {
 			&resource.State,
 		)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		resources = append(resources, resource)
 	}
 
-	return resources
+	return resources, nil
 }

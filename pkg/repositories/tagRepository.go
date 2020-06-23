@@ -12,7 +12,7 @@ type TagRepository struct {
 }
 
 // GetCategoryTags ...
-func (tr *TagRepository) GetCategoryTags(categoryID int) models.Tags {
+func (tr *TagRepository) GetCategoryTags(categoryID int) (models.Tags, error) {
 	rows, err := tr.DB.Query(`
 							SELECT
 								ta.tag_id,
@@ -24,21 +24,24 @@ func (tr *TagRepository) GetCategoryTags(categoryID int) models.Tags {
 							;
 							`, categoryID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	tags := make(models.Tags, 0)
 	for rows.Next() {
 		var tag models.Tag
-		rows.Scan(&tag.TagID, &tag.Title)
+		err = rows.Scan(&tag.TagID, &tag.Title)
+		if err != nil {
+			return nil, err
+		}
 		tags = append(tags, tag)
 	}
 
-	return tags
+	return tags, nil
 }
 
 // GetTopicTags ...
-func (tr *TagRepository) GetTopicTags(topicID int) models.Tags {
+func (tr *TagRepository) GetTopicTags(topicID int) (models.Tags, error) {
 	rows, err := tr.DB.Query(`
 							SELECT
 								ta.tag_id,
@@ -50,21 +53,24 @@ func (tr *TagRepository) GetTopicTags(topicID int) models.Tags {
 							;
 							`, topicID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	tags := make(models.Tags, 0)
 	for rows.Next() {
 		var tag models.Tag
-		rows.Scan(&tag.TagID, &tag.Title)
+		err = rows.Scan(&tag.TagID, &tag.Title)
+		if err != nil {
+			return nil, err
+		}
 		tags = append(tags, tag)
 	}
 
-	return tags
+	return tags, nil
 }
 
 // GetResourceTags ...
-func (tr *TagRepository) GetResourceTags(resourceID int) models.Tags {
+func (tr *TagRepository) GetResourceTags(resourceID int) (models.Tags, error) {
 	rows, err := tr.DB.Query(`
 							SELECT
 								ta.tag_id,
@@ -76,15 +82,18 @@ func (tr *TagRepository) GetResourceTags(resourceID int) models.Tags {
 							;
 							`, resourceID)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	tags := make(models.Tags, 0)
 	for rows.Next() {
 		var tag models.Tag
-		rows.Scan(&tag.TagID, &tag.Title)
+		err = rows.Scan(&tag.TagID, &tag.Title)
+		if err != nil {
+			return nil, err
+		}
 		tags = append(tags, tag)
 	}
 
-	return tags
+	return tags, nil
 }
